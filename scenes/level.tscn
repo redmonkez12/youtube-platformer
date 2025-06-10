@@ -1,0 +1,25 @@
+[gd_scene load_steps=5 format=4 uid="uid://bnb4wpwy051lh"]
+
+[ext_resource type="Texture2D" uid="uid://dc7xeyhw6ow5p" path="res://assets/ground_tile07.png" id="1_2q6dc"]
+[ext_resource type="PackedScene" uid="uid://bxxyhc86o8ff7" path="res://scenes/goblin.tscn" id="2_w7c3h"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_w7c3h"]
+texture = ExtResource("1_2q6dc")
+texture_region_size = Vector2i(64, 64)
+0:0/0 = 0
+0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-32, -16.9342, 32, -15.8053, 32, 32, -32, 32)
+
+[sub_resource type="TileSet" id="TileSet_w8frs"]
+tile_size = Vector2i(64, 64)
+physics_layer_0/collision_layer = 1
+physics_layer_0/collision_mask = 0
+sources/1 = SubResource("TileSetAtlasSource_w7c3h")
+
+[node name="Level" type="Node2D"]
+
+[node name="Platform" type="TileMapLayer" parent="."]
+tile_map_data = PackedByteArray("AAAAAAkAAQAAAAAAAAABAAkAAQAAAAAAAAACAAkAAQAAAAAAAAADAAkAAQAAAAAAAAAEAAkAAQAAAAAAAAAFAAkAAQAAAAAAAAAGAAkAAQAAAAAAAAAHAAkAAQAAAAAAAAAIAAkAAQAAAAAAAAAJAAkAAQAAAAAAAAAKAAkAAQAAAAAAAAALAAkAAQAAAAAAAAAMAAkAAQAAAAAAAAANAAkAAQAAAAAAAAAOAAkAAQAAAAAAAAAPAAkAAQAAAAAAAAAQAAkAAQAAAAAAAAARAAkAAQAAAAAAAAAFAAcAAQAAAAAAAAAGAAcAAQAAAAAAAAAHAAcAAQAAAAAAAAAIAAcAAQAAAAAAAAAJAAcAAQAAAAAAAAAKAAcAAQAAAAAAAAA=")
+tile_set = SubResource("TileSet_w8frs")
+
+[node name="Goblin" parent="." instance=ExtResource("2_w7c3h")]
+position = Vector2(161, 558)

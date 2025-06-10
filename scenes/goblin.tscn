@@ -1,0 +1,54 @@
+[gd_scene load_steps=10 format=3 uid="uid://bxxyhc86o8ff7"]
+
+[ext_resource type="Texture2D" uid="uid://u4mrb8pk57hv" path="res://assets/goblin/walk/walk1.png" id="1_lkl8q"]
+[ext_resource type="Script" uid="uid://cjy83fsleq554" path="res://scripts/goblin.gd" id="1_yyaat"]
+[ext_resource type="Texture2D" uid="uid://cimoghtt2qtv3" path="res://assets/goblin/walk/walk2.png" id="2_yyaat"]
+[ext_resource type="Texture2D" uid="uid://c6ng56eo737qa" path="res://assets/goblin/walk/walk3.png" id="3_u21pb"]
+[ext_resource type="Texture2D" uid="uid://br464v03j8nca" path="res://assets/goblin/walk/walk4.png" id="4_vho8j"]
+[ext_resource type="Texture2D" uid="uid://deo41qb84pikb" path="res://assets/goblin/walk/walk5.png" id="5_g2t3q"]
+[ext_resource type="Texture2D" uid="uid://dbd0bmci7u7gc" path="res://assets/goblin/walk/walk6.png" id="6_osho7"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_3v2ag"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_lkl8q")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_yyaat")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_u21pb")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_vho8j")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_g2t3q")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_osho7")
+}],
+"loop": true,
+"name": &"walk",
+"speed": 12.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_jej6c"]
+size = Vector2(28, 42)
+
+[node name="Goblin" type="CharacterBody2D"]
+collision_layer = 0
+script = ExtResource("1_yyaat")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_3v2ag")
+animation = &"walk"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-4, 3)
+shape = SubResource("RectangleShape2D_jej6c")
+
+[node name="RayCast2D" type="RayCast2D" parent="."]
+position = Vector2(13, 17)
+target_position = Vector2(0, 23)
