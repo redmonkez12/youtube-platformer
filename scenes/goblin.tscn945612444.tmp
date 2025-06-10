@@ -39,7 +39,6 @@ size = Vector2(28, 42)
 
 [node name="Goblin" type="CharacterBody2D"]
 collision_layer = 0
-platform_floor_layers = 4294967040
 script = ExtResource("1_yyaat")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
@@ -51,5 +50,5 @@ position = Vector2(-4, 3)
 shape = SubResource("RectangleShape2D_jej6c")
 
 [node name="RayCast2D" type="RayCast2D" parent="."]
-position = Vector2(25, 17)
-target_position = Vector2(0, 20)
+position = Vector2(18, 17)
+target_position = Vector2(0, 30)
