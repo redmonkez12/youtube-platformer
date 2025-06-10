@@ -1,7 +1,7 @@
 # GoblinWalking.gd - Simple walking AI with cliff detection tutorial
 extends CharacterBody2D
 
-enum FACING { RIGHT = 1, LEFT = -1}  # Opraveno: RIGHT = 1, LEFT = -1
+enum FACING { RIGHT = 1, LEFT = -1}
 
 # Movement constants
 const GRAVITY: float = 690.0
@@ -12,15 +12,15 @@ const WALK_SPEED: float = 60.0
 @onready var ray_cast_2d: RayCast2D = $RayCast2D
 
 # Movement variables
-var _facing: int = FACING.RIGHT  # Začínáme doprava
+var _facing: int = FACING.RIGHT
 var start_position: Vector2
 
 # Cooldown to prevent rapid direction changes
 var turn_cooldown: float = 0.0
-const TURN_COOLDOWN_TIME: float = 0.5  # Half second cooldown
+const TURN_COOLDOWN_TIME: float = 0.5
 
 # Simple states for animation
-enum State { IDLE, WALK }
+enum State { WALK }
 var current_state: State = State.WALK
 
 func _ready() -> void:
@@ -28,13 +28,25 @@ func _ready() -> void:
 	start_position = global_position
 	
 	# Set raycast to detect platforms (layer 1)
-	#ray_cast_2d.enabled = true
-	#ray_cast_2d.collision_mask = 1
-	#ray_cast_2d.force_raycast_update()
+	ray_cast_2d.enabled = true
+	ray_cast_2d.collision_mask = 1  # Layer 1 where platforms are
+	
+	# Position raycast correctly based on initial facing direction
+	var raycast_distance = 25
+	ray_cast_2d.position.x = raycast_distance * _facing
+	ray_cast_2d.target_position = Vector2(0, 30)  # Point downward to detect ground
+	
+	ray_cast_2d.force_raycast_update()
 	
 	# Start walking animation
 	if animated_sprite_2d and animated_sprite_2d.sprite_frames:
 		animated_sprite_2d.play("walk")
+	
+	# Debug info
+	print("Goblin initialized:")
+	print("- Position: ", global_position)
+	print("- Raycast position: ", ray_cast_2d.position)
+	print("- Raycast target: ", ray_cast_2d.target_position)
 
 func _physics_process(delta: float) -> void:
 	# Update turn cooldown
@@ -66,27 +78,24 @@ func _physics_process(delta: float) -> void:
 func handle_walking() -> void:
 	# Move horizontally based on facing direction
 	velocity.x = WALK_SPEED * _facing
+	print(velocity.x)
 
 func check_for_obstacles() -> void:
 	# Only check when on the ground
 	if not is_on_floor():
 		return
 	
-	var should_turn = false
-	var turn_reason = ""
+	# Force raycast update before checking
+	ray_cast_2d.force_raycast_update()
 	
-	# Check for walls first (higher priority)
-	if is_on_wall():
-		should_turn = true
-		turn_reason = "Hit wall"
-	# Only check for cliff if not hitting a wall
-	elif not ray_cast_2d.is_colliding():
-		should_turn = true
-		turn_reason = "No ground ahead"
+	# Debug output
+	print("Raycast check - Position: ", ray_cast_2d.global_position, 
+		  " Target: ", ray_cast_2d.global_position + ray_cast_2d.target_position,
+		  " Colliding: ", ray_cast_2d.is_colliding())
 	
-	# Turn around if needed
-	if should_turn:
-		print(turn_reason + " - turning around")
+	# Check for cliff - if raycast is NOT colliding, there's no ground ahead
+	if not ray_cast_2d.is_colliding():
+		print("No ground ahead (cliff detected) - turning around")
 		flip_direction()
 
 func flip_direction() -> void:
@@ -99,21 +108,20 @@ func flip_direction() -> void:
 	# Update sprite flip
 	animated_sprite_2d.flip_h = (_facing == FACING.LEFT)
 	
-	# Move the raycast to the new front
-	ray_cast_2d.position.x = abs(ray_cast_2d.position.x) * _facing
+	# Move the raycast to the new front - FIXED POSITIONING
+	var raycast_distance = 25  # Distance from center to edge
+	ray_cast_2d.position.x = raycast_distance * _facing
+	
+	# Force raycast update after repositioning
+	ray_cast_2d.force_raycast_update()
 	
 	print("Goblin turned around, now facing: ", "left" if _facing == FACING.LEFT else "right")
+	print("Raycast position: ", ray_cast_2d.position)
 
 func update_animation() -> void:
-	# Simple animation logic
-	if abs(velocity.x) > 5.0:
-		if current_state != State.WALK:
-			current_state = State.WALK
-			animated_sprite_2d.play("walk")
-	else:
-		if current_state != State.IDLE:
-			current_state = State.IDLE
-			animated_sprite_2d.play("idle")
+	# Just keep playing the walk animation
+	if not animated_sprite_2d.is_playing():
+		animated_sprite_2d.play("walk")
 
 # Debug visualization
 func _draw() -> void:
@@ -127,18 +135,24 @@ func _draw() -> void:
 		var local_end = to_local(ray_end)
 		
 		# Draw the raycast line
-		draw_line(local_start, local_end, Color.RED, 2.0)
+		var line_color = Color.GREEN if ray_cast_2d.is_colliding() else Color.RED
+		draw_line(local_start, local_end, line_color, 2.0)
 		
 		# Draw a dot at the collision point if hitting something
 		if ray_cast_2d.is_colliding():
 			var collision_point = to_local(ray_cast_2d.get_collision_point())
-			draw_circle(collision_point, 3.0, Color.GREEN)
+			draw_circle(collision_point, 3.0, Color.YELLOW)
 		
 		# Draw direction indicator
 		var direction_pos = Vector2(_facing * 20, -30)
 		draw_circle(direction_pos, 5.0, Color.BLUE)
 		
-		# Debug text
+		# Debug text with more info
 		var debug_text = "Facing: " + ("LEFT" if _facing == FACING.LEFT else "RIGHT")
+		debug_text += "\nRaycast Hit: " + str(ray_cast_2d.is_colliding())
+		debug_text += "\nCooldown: " + str(turn_cooldown)
+		
 		var font = ThemeDB.fallback_font
-		draw_string(font, Vector2(-30, -40), debug_text, HORIZONTAL_ALIGNMENT_LEFT, -1, 12)
+		var lines = debug_text.split("\n")
+		for i in range(lines.size()):
+			draw_string(font, Vector2(-50, -60 + i * 15), lines[i], HORIZONTAL_ALIGNMENT_LEFT, -1, 12)

@@ -39,7 +39,6 @@ size = Vector2(28, 42)
 
 [node name="Goblin" type="CharacterBody2D"]
 collision_layer = 0
-platform_floor_layers = 4294967040
 script = ExtResource("1_yyaat")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
