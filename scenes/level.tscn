@@ -1,7 +1,8 @@
-[gd_scene load_steps=5 format=4 uid="uid://bnb4wpwy051lh"]
+[gd_scene load_steps=6 format=4 uid="uid://bnb4wpwy051lh"]
 
 [ext_resource type="Texture2D" uid="uid://dc7xeyhw6ow5p" path="res://assets/ground_tile07.png" id="1_2q6dc"]
 [ext_resource type="PackedScene" uid="uid://bxxyhc86o8ff7" path="res://scenes/goblin.tscn" id="2_w7c3h"]
+[ext_resource type="PackedScene" uid="uid://c6y2hi165tion" path="res://scenes/player.tscn" id="3_w8frs"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_w7c3h"]
 texture = ExtResource("1_2q6dc")
@@ -23,3 +24,6 @@ tile_set = SubResource("TileSet_w8frs")
 
 [node name="Goblin" parent="." instance=ExtResource("2_w7c3h")]
 position = Vector2(479, 428)
+
+[node name="Player" parent="." instance=ExtResource("3_w8frs")]
+position = Vector2(189, 560)
