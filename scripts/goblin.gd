@@ -41,12 +41,6 @@ func _ready() -> void:
 	# Start walking animation
 	if animated_sprite_2d and animated_sprite_2d.sprite_frames:
 		animated_sprite_2d.play("walk")
-	
-	# Debug info
-	print("Goblin initialized:")
-	print("- Position: ", global_position)
-	print("- Raycast position: ", ray_cast_2d.position)
-	print("- Raycast target: ", ray_cast_2d.target_position)
 
 func _physics_process(delta: float) -> void:
 	# Update turn cooldown
@@ -78,24 +72,14 @@ func _physics_process(delta: float) -> void:
 func handle_walking() -> void:
 	# Move horizontally based on facing direction
 	velocity.x = WALK_SPEED * _facing
-	print(velocity.x)
 
 func check_for_obstacles() -> void:
 	# Only check when on the ground
 	if not is_on_floor():
 		return
 	
-	# Force raycast update before checking
-	ray_cast_2d.force_raycast_update()
-	
-	# Debug output
-	print("Raycast check - Position: ", ray_cast_2d.global_position, 
-		  " Target: ", ray_cast_2d.global_position + ray_cast_2d.target_position,
-		  " Colliding: ", ray_cast_2d.is_colliding())
-	
 	# Check for cliff - if raycast is NOT colliding, there's no ground ahead
 	if not ray_cast_2d.is_colliding():
-		print("No ground ahead (cliff detected) - turning around")
 		flip_direction()
 
 func flip_direction() -> void:
@@ -114,9 +98,6 @@ func flip_direction() -> void:
 	
 	# Force raycast update after repositioning
 	ray_cast_2d.force_raycast_update()
-	
-	print("Goblin turned around, now facing: ", "left" if _facing == FACING.LEFT else "right")
-	print("Raycast position: ", ray_cast_2d.position)
 
 func update_animation() -> void:
 	# Just keep playing the walk animation
