@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://c6y2hi165tion"]
+[gd_scene load_steps=26 format=3 uid="uid://c6y2hi165tion"]
 
 [ext_resource type="Texture2D" uid="uid://cvggaca3dcia2" path="res://assets/mage/idle/idle1.png" id="1_f1ej7"]
 [ext_resource type="Script" uid="uid://dcyccc63hqg0y" path="res://scripts/player.gd" id="1_oprun"]
@@ -15,6 +15,14 @@
 [ext_resource type="Texture2D" uid="uid://clb06mencgwqw" path="res://assets/mage/idle/idle12.png" id="12_ke2ow"]
 [ext_resource type="Texture2D" uid="uid://dolgq6puj5uo6" path="res://assets/mage/idle/idle13.png" id="13_ujl30"]
 [ext_resource type="Texture2D" uid="uid://c3e5r58yrj0re" path="res://assets/mage/idle/idle14.png" id="14_31cv2"]
+[ext_resource type="Texture2D" uid="uid://c82ldfolyp3lw" path="res://assets/mage/run/run1.png" id="16_4ni07"]
+[ext_resource type="Texture2D" uid="uid://okp8qcepe0d0" path="res://assets/mage/run/run2.png" id="17_l71n6"]
+[ext_resource type="Texture2D" uid="uid://himym31a3wju" path="res://assets/mage/run/run3.png" id="18_ke2ow"]
+[ext_resource type="Texture2D" uid="uid://bva58qwceql41" path="res://assets/mage/run/run4.png" id="19_ujl30"]
+[ext_resource type="Texture2D" uid="uid://c6beor57qxqtk" path="res://assets/mage/run/run5.png" id="20_31cv2"]
+[ext_resource type="Texture2D" uid="uid://k3ppslpu3vfo" path="res://assets/mage/run/run6.png" id="21_pf23h"]
+[ext_resource type="Texture2D" uid="uid://b1dkci3u6rsmc" path="res://assets/mage/run/run7.png" id="22_dt7fs"]
+[ext_resource type="Texture2D" uid="uid://sfbktm05wc7c" path="res://assets/mage/run/run8.png" id="23_wqfne"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_pf23h"]
 animations = [{
@@ -64,6 +72,35 @@ animations = [{
 "loop": true,
 "name": &"idle",
 "speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("16_4ni07")
+}, {
+"duration": 1.0,
+"texture": ExtResource("17_l71n6")
+}, {
+"duration": 1.0,
+"texture": ExtResource("18_ke2ow")
+}, {
+"duration": 1.0,
+"texture": ExtResource("19_ujl30")
+}, {
+"duration": 1.0,
+"texture": ExtResource("20_31cv2")
+}, {
+"duration": 1.0,
+"texture": ExtResource("21_pf23h")
+}, {
+"duration": 1.0,
+"texture": ExtResource("22_dt7fs")
+}, {
+"duration": 1.0,
+"texture": ExtResource("23_wqfne")
+}],
+"loop": true,
+"name": &"run",
+"speed": 10.0
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_dt7fs"]
@@ -74,7 +111,7 @@ script = ExtResource("1_oprun")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_pf23h")
-animation = &"idle"
+animation = &"run"
 autoplay = "idle"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
